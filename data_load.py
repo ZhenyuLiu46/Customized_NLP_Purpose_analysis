@@ -1,18 +1,20 @@
 import csv
 import numpy as np
-from config import *
+import config
 
 # ??? train and test data probably should be sperated here
 
 
 class PurposeDataset():
     def __init__(self, phase='train'):
-        self.file = PURPOSE_FILE
+
+        self.file = config.PURPOSE_FILE
         self.phase = phase
         self.all_data = self.load_data()
 
     def load_data(self):
-        with open(PURPOSE_FILE, newline='', encoding='utf-8-sig') as f:  # For excel-generated csv issue
+        # For excel-generated csv issue
+        with open(config.PURPOSE_FILE, newline='', encoding='utf-8-sig') as f:
             reader = csv.reader(f)
             next(reader)  # This skips the first row of the CSV file.
             alert_list = list(reader)
@@ -27,7 +29,7 @@ class PurposeDataset():
         # inputData as the list to save the text and label, [0] as the text description, [1] as the label
         inputData = [[]]
         for id, content in alert_dic.items():
-            #print(id, ":", content)
+            # print(id, ":", content)
             # change string label to int label(0,1)
             content[1] = int(content[1])
             inputData.append(content)
@@ -36,7 +38,7 @@ class PurposeDataset():
 
 
 '''
-#For non-excel generated .csv
+# For non-excel generated .csv
 with open('Book2.csv', 'rb') as f:
     reader = csv.reader(f)
     your_list = list(reader)
