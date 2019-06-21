@@ -6,7 +6,7 @@ from config import *
 
 
 class PurposeDataset():
-    def __init__(self, phase='all_data'):
+    def __init__(self, phase='train'):
         self.file = PURPOSE_FILE
         self.phase = phase
         self.all_data = self.load_data()
@@ -31,6 +31,7 @@ class PurposeDataset():
             # change string label to int label(0,1)
             content[1] = int(content[1])
             inputData.append(content)
+        del inputData[0]  # delete first empty element
         return inputData
 
 
