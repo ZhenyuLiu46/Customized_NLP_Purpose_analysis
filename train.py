@@ -1,16 +1,18 @@
-from sklearn.model_selection import train_test_split
 from sklearn.model_selection import GridSearchCV
+from sklearn.model_selection import train_test_split
 from sklearn.pipeline import Pipeline
 import grid_search
-import data_clean
-import data_load
 import models
 import numpy as np
 import config
 import pickle
+import sys
+import logging
+import traceback
+
+# Seperate feature and label; seperate trian and test data from Picklefile
 
 
-# Seperate feature and label; seperate trian and test data
 class DataPrep:
     def __init__(self):
         self.X_train = []
@@ -20,6 +22,7 @@ class DataPrep:
         self.prepare_data()
 
     def prepare_data(self):
+        logging.info('called')
         with open(config.PICKLEFILE, 'rb') as f:
             cleaned_all_data = pickle.load(f)
         cleaned_data_X = []
@@ -32,7 +35,8 @@ class DataPrep:
 
 
 def main():
-    # Data Prep
+    # Data preperation
+    logging.info('called')
     X_train = DataPrep().X_train
     y_train = DataPrep().y_train
     X_test = DataPrep().X_test
@@ -42,21 +46,27 @@ def main():
     text_clf = models.MultinomialNaiveBayesCV().clf
     text_clf = text_clf.fit(X_train, y_train)
 
-    # Test, Performance of NB Classifier
+    # Test, Performance of MultinomialNaiveBayesCV Classifier
     predicted = text_clf.predict(X_test)
     score = np.mean(predicted == y_test)
+    logging.critical('MultinomialNaiveBayes score: %s', score)
     print(score)
 
-    # grid search
+    # grid search: perform hyper parameter tuning
     gs_clf = grid_search.Tune(text_clf).clf
     gs_clf = gs_clf.fit(X_train, y_train)
+    logging.critical('grid search best score: %s', gs_clf.best_score_)
     print(gs_clf.best_score_)
+    logging.critical('grid search best params: %s', gs_clf.best_params_)
     print(gs_clf.best_params_)
 
+    '''
+    #To test picklefile output
     with open(config.PICKLEFILE, 'rb') as f:
-        dogDict = pickle.load(f)
-    for data in dogDict:
+        allData = pickle.load(f)
+    for data in allData:
         print(data)
+    '''
 
 
 '''
@@ -69,4 +79,12 @@ def main():
 '''
 
 if __name__ == '__main__':
-    main()
+    # set logging config
+    FORMAT = "[%(filename)s:%(lineno)s - %(funcName)s] %(name)s - %(levelname)s - %(message)s"
+    logging.basicConfig(filename='info.log', filemode='a',
+                        level=logging.DEBUG, format=FORMAT)
+    try:
+        main()
+    except Exception as e:
+        traceback.print_exc()  # console print exception
+        logging.exception("Exception occurred")  # log exception

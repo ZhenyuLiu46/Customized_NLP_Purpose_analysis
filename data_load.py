@@ -2,8 +2,7 @@ import csv
 import numpy as np
 import config
 import pickle
-
-# ??? train and test data probably should be sperated here
+import logging
 
 
 class PurposeDataset():
@@ -13,6 +12,7 @@ class PurposeDataset():
         self.all_data = self.load_data()
 
     def load_data(self):
+        logging.info('called')
         # For excel-generated csv issue
         with open(config.PURPOSE_FILE, newline='', encoding='utf-8-sig') as f:
             reader = csv.reader(f)

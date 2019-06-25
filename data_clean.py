@@ -2,6 +2,7 @@ import data_load
 import config
 import pickle
 import re  # for replace special character
+import logging
 
 
 class CleanedPurposeDataset():
@@ -12,6 +13,7 @@ class CleanedPurposeDataset():
         self.clean_data(_all_data)  # load X,y,all_data
 
     def clean_data(self, _all_data):
+        logging.info('called')
         cleaned_data = [[]]
         text = []
         label = []
@@ -36,7 +38,6 @@ class CleanedPurposeDataset():
 
 
 # Test function and print
-
 '''inputData = data_load.PurposeDataset().all_data
 cleaned_data = CleanedPurposeDataset(inputData).all_data
 cleaned_data_X = CleanedPurposeDataset(inputData).X

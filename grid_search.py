@@ -1,4 +1,5 @@
 from sklearn.model_selection import GridSearchCV
+import logging
 
 
 class Tune:
@@ -11,6 +12,7 @@ class Tune:
             True, False), 'clf__alpha': (1e-2, 1e-3)}
         gs_clf = GridSearchCV(_clf, parameters, n_jobs=-1)
         #gs_clf = gs_clf.fit(X_train, y_train)
+        logging.info('called')
         return gs_clf
 
 
