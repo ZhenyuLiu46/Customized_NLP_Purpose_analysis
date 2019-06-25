@@ -1,4 +1,6 @@
 import data_load
+import config
+import pickle
 import re  # for replace special character
 
 
@@ -29,6 +31,8 @@ class CleanedPurposeDataset():
         self.X = text
         self.y = label
         self.all_data = cleaned_data
+        with open('pickles/data_pickle.pkl', 'wb') as f:
+            pickle.dump(cleaned_data, f)
 
 
 # Test function and print

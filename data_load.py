@@ -1,13 +1,13 @@
 import csv
 import numpy as np
 import config
+import pickle
 
 # ??? train and test data probably should be sperated here
 
 
 class PurposeDataset():
     def __init__(self, phase='train'):
-
         self.file = config.PURPOSE_FILE
         self.phase = phase
         self.all_data = self.load_data()
@@ -32,7 +32,7 @@ class PurposeDataset():
             # print(id, ":", content)
             # change string label to int label(0,1)
             content[1] = int(content[1])
-            inputData.append(content)
+            inputData.append(content)  # not saving id here
         del inputData[0]  # delete first empty element
         return inputData
 
