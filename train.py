@@ -1,6 +1,8 @@
-from sklearn.model_selection import GridSearchCV
+#from sklearn.model_selection import GridSearchCV
 from sklearn.model_selection import train_test_split
 from sklearn.pipeline import Pipeline
+from sklearn.metrics import precision_score
+from sklearn.metrics import recall_score
 import grid_search
 import models
 import numpy as np
@@ -48,9 +50,29 @@ def main():
 
     # Test, Performance of MultinomialNaiveBayesCV Classifier
     predicted = text_clf.predict(X_test)
-    score = np.mean(predicted == y_test)
+
+    score = np.mean(predicted == y_test)  # Accuracy
+    prec_score_bi = precision_score(
+        y_test, predicted, pos_label=1, average='binary')  # precision_bi, 1 stands for true alerts
+
+    prec_score_micro = precision_score(
+        y_test, predicted, average='micro')  # precision_micro
+
+    recall_score_bi = recall_score(
+        y_test, predicted, pos_label=1, average='binary')
+
     logging.critical('MultinomialNaiveBayes score: %s', score)
+    logging.critical(
+        'MultinomialNaiveBayes prec_score_bi score: %s', prec_score_bi)
+    logging.critical(
+        'MultinomialNaiveBayes prec_score_micro score: %s', prec_score_micro)
+    logging.critical(
+        'MultinomialNaiveBayes recall_score_bi score: %s', recall_score_bi)
+
     print(score)
+    print(prec_score_bi)
+    print(prec_score_micro)
+    print(recall_score_bi)
 
     # grid search: perform hyper parameter tuning
     gs_clf = grid_search.Tune(text_clf).clf
