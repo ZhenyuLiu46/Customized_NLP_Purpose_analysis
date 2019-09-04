@@ -3,7 +3,7 @@ __pycache__/
 *.py[cod]
 
 #pickles
-**/pickles
+pickles/
 
 # C extensions
 *.so
