@@ -3,6 +3,7 @@ __pycache__/
 *.py[cod]
 
 #pickles
+.pkl
 pickles/
 
 # C extensions
